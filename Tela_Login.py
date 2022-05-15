@@ -935,6 +935,8 @@ def Sair_Vendas():
 def facebook():
     tela_facebook.widget.load(QtCore.QUrl("https://www.facebook.com/Supernac-Supermercados-103494018984263/"))
     tela_facebook.show()
+
+    print("Teste")
     
     
 
