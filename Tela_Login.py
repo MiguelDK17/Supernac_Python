@@ -801,8 +801,8 @@ def buscaProdutoCodigo():
             print(total_quant)
     
             
-            #tela_vendas.edtCodigo.setText("")
-            #tela_vendas.edtTotalItem.setText("")
+            tela_vendas.edtNome.setText("")
+            tela_vendas.edtTotalItem.setText("")
     
     
     
@@ -888,7 +888,7 @@ def Calcular_Troco():
 
     
 def Apagar_Tudo():
-    tela_vendas.edtNome.setText("")
+    #tela_vendas.edtNome.setText("")
     tela_vendas.edtTotalItem.setText("")
     tela_vendas.edtCodigo.setText("")
     tela_vendas.listNome.clear()
@@ -914,19 +914,19 @@ def Gerar_Nota_Fiscal():
     pdf.setFont("Times-Bold",18)
     pdf.setStrokeColorRGB(0.2,0.5,0.3)
     pdf.setFillColorRGB(0,100,0)
-    pdf.drawString(21,580,"Nome")
-    pdf.drawString(310,570,"Preço")
-    pdf.drawString(410,5700, "Código")
+    pdf.drawString(21,635,"Nome")
+    pdf.drawString(310,635,"Preço")
+    pdf.drawString(410,635, "Código")
     pdf.drawString(400,120, "Total da Compra")
     pdf.drawString(210,50, "Método de Pagamento:")
     pdf.drawString(210,750 - y,str(tela_login.edt_usuario.text()))
-    pdf.drawString(400,410 - y,str(tela_vendas.edtTotalGeral.text()))
+    pdf.drawString(400,95 - y,str(tela_vendas.edtTotalGeral.text()))
     pdf.drawString(390,50 - y,str(tela_vendas.tv_Metodos.text()))
     for i in range(0,len(dados_lidos)):
         y = y + 50
-        pdf.drawString(21,550 - y,str(dados_lidos[i][0]))
-        pdf.drawString(310,550 - y,str (dados_lidos[i][1]))
-        pdf.drawString(410,550 - y,str (dados_lidos[i][2]))
+        pdf.drawString(21,625 - y,str(dados_lidos[i][0]))
+        pdf.drawString(310,625 - y,str (dados_lidos[i][1]))
+        pdf.drawString(410,625 - y,str (dados_lidos[i][2]))
         
     pdf.save()
     print("Isso talvez ainda não está funcionando como deveria")
