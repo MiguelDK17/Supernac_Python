@@ -8,6 +8,7 @@ from re import T
 from sys import modules
 from tkinter import Canvas, Scrollbar, dialog
 from tokenize import String
+from turtle import color
 from typing import Any
 from xml.etree.ElementInclude import include
 from colorama import Cursor
@@ -19,6 +20,7 @@ from PyQt5 import (QtCore, QtGui, QtWebEngine, QtWebEngineWidgets, QtWidgets,
 from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtWidgets import *
 from reportlab.pdfgen import canvas
+from reportlab.lib.colors import black,green,red,yellow
 
 app = QtWidgets.QApplication([])
 banco = mysql.connector.connect(
@@ -45,6 +47,13 @@ def funcao_login():
 def logout():
     tela_principal.close()
     tela_login.show()
+def Boas_Vindas():
+    cursor = banco.cursor()
+    comando_Bem_Vindo = ("SELECT nome,sobrenome FROM tb_pessoas WHERE usuario = '{}'".format(tela_login.edt_usuario.text()))
+    cursor.execute(comando_Bem_Vindo)
+    for (nome,sobrenome) in cursor: 
+        nome_string = str(nome)
+        tela_principal.tvBoasVindas.setText("Olá "+ nome_string + " "+ str(sobrenome))
 def controle():
         tela_pessoas.show()
 def funcao_principal():
@@ -59,6 +68,7 @@ def funcao_principal():
     linha9 = tela_pessoas.lineEdit_9.text()
     linha10 = tela_pessoas.lineEdit_6.text()
     linha11 = tela_pessoas.lineEdit_10.text()
+    linha12 = tela_pessoas.lineEdit_11.text()
 
     print ("CPF-CNPJ:",linha1)
     print ("Nome:",linha2)
@@ -73,8 +83,8 @@ def funcao_principal():
     print("Senha:",linha11)
     
     cursor = banco.cursor()
-    comando_SQL = "INSERT INTO tb_pessoas (cpf_cnpj,nome,endereço,bairro,cidade,estado,telefone,email,tipo,usuario,senha) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-    dados = (str (linha1),str (linha2),str (linha3),str (linha4),str (linha5),str(linha6),str(linha7),str (linha8),str (linha9),str (linha10), str (linha11))
+    comando_SQL = "INSERT INTO tb_pessoas (cpf_cnpj,nome,sobrenome,endereço,bairro,cidade,estado,telefone,email,tipo,usuario,senha) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+    dados = (str (linha1),str (linha2),str (linha3),str (linha4),str (linha5),str(linha6),str(linha7),str (linha8),str (linha9),str (linha10), str (linha11),str (linha12))
     cursor.execute(comando_SQL,dados)
     banco.commit()
     tela_pessoas.lineEdit.setText("")
@@ -88,6 +98,7 @@ def funcao_principal():
     tela_pessoas.lineEdit_9.setText("")
     tela_pessoas.lineEdit_6.setText("")
     tela_pessoas.lineEdit_10.setText("")
+    tela_pessoas.lineEdit_11.setText("")
 def Sair():
     tela_pessoas.close()
 def Sair_da_Segunda_Tela():
@@ -855,7 +866,7 @@ def buscaProdutoCodigo():
             print(total_quant)
     
         
-            #tela_vendas.edtCodigo.setText("")
+            tela_vendas.edtNome.setText("")
             tela_vendas.edtTotalItem.setText("")
     #Fim do ifelse 
     else: 
@@ -912,22 +923,21 @@ def Gerar_Nota_Fiscal():
     pdf.drawString(50,750, "Nome do Usuario:")
     pdf.drawString(150,700,"Abaixo,os produtos:")
     pdf.setFont("Times-Bold",18)
-    pdf.setStrokeColorRGB(0.2,0.5,0.3)
-    pdf.setFillColorRGB(0,100,0)
-    pdf.drawString(21,635,"Nome")
-    pdf.drawString(310,635,"Preço")
-    pdf.drawString(410,635, "Código")
-    pdf.drawString(400,120, "Total da Compra")
-    pdf.drawString(210,50, "Método de Pagamento:")
-    pdf.drawString(210,750 - y,str(tela_login.edt_usuario.text()))
+    pdf.drawString(41,650,"Nome")
+    pdf.drawString(310,650,"Preço")
+    pdf.drawString(410,650, "Código")
+    pdf.drawString(400,120, "Total da Compra:")
+    pdf.drawString(200,10,"Método de Pagamento:")
     pdf.drawString(400,95 - y,str(tela_vendas.edtTotalGeral.text()))
-    pdf.drawString(390,50 - y,str(tela_vendas.tv_Metodos.text()))
+    pdf.drawString(210,750 - y,str(tela_login.edt_usuario.text()))
+    pdf.drawString(380,10 - y,str(tela_vendas.tv_Metodos.text()))
+    
     for i in range(0,len(dados_lidos)):
         y = y + 50
-        pdf.drawString(21,625 - y,str(dados_lidos[i][0]))
-        pdf.drawString(310,625 - y,str (dados_lidos[i][1]))
-        pdf.drawString(410,625 - y,str (dados_lidos[i][2]))
-        
+        pdf.drawString(41,650 - y,str(dados_lidos[i][0]))
+        pdf.drawString(310,650 - y,str (dados_lidos[i][1]))
+        pdf.drawString(410,650 - y,str (dados_lidos[i][2]))
+    
     pdf.save()
     print("Isso talvez ainda não está funcionando como deveria")
 def Sair_Vendas():
@@ -935,8 +945,6 @@ def Sair_Vendas():
 def facebook():
     tela_facebook.widget.load(QtCore.QUrl("https://www.facebook.com/Supernac-Supermercados-103494018984263/"))
     tela_facebook.show()
-
-    print("Teste")
     
     
 
@@ -952,6 +960,7 @@ tela_vendas = uic.loadUi("tela_vendas.ui")
 tela_facebook = uic.loadUi("web_facebook.ui")
 
 tela_login.bt_entrar.clicked.connect(funcao_login)
+tela_login.bt_entrar.clicked.connect(Boas_Vindas)
 tela_principal.bt_logout.clicked.connect(logout)
 tela_principal.bt_pessoas.clicked.connect(controle)
 tela_principal.bt_produtos.clicked.connect(controle_produtos)
