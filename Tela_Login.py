@@ -48,12 +48,13 @@ def logout():
     tela_principal.close()
     tela_login.show()
 def Boas_Vindas():
+    global nome_completo
     cursor = banco.cursor()
     comando_Bem_Vindo = ("SELECT nome,sobrenome FROM tb_pessoas WHERE usuario = '{}'".format(tela_login.edt_usuario.text()))
     cursor.execute(comando_Bem_Vindo)
     for (nome,sobrenome) in cursor: 
-        nome_string = str(nome)
-        tela_principal.tvBoasVindas.setText("Olá "+ nome_string + " "+ str(sobrenome))
+        nome_completo = str(nome +" "+ sobrenome)
+        tela_principal.tvBoasVindas.setText("Olá "+ nome_completo)
 def controle():
         tela_pessoas.show()
 def funcao_principal():
@@ -929,7 +930,7 @@ def Gerar_Nota_Fiscal():
     pdf.drawString(400,120, "Total da Compra:")
     pdf.drawString(200,10,"Método de Pagamento:")
     pdf.drawString(400,95 - y,str(tela_vendas.edtTotalGeral.text()))
-    pdf.drawString(210,750 - y,str(tela_login.edt_usuario.text()))
+    pdf.drawString(210,750 - y,str(nome_completo))
     pdf.drawString(380,10 - y,str(tela_vendas.tv_Metodos.text()))
     
     for i in range(0,len(dados_lidos)):
