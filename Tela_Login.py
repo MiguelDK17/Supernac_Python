@@ -69,7 +69,7 @@ def funcao_principal():
     linha9 = tela_pessoas.lineEdit_9.text()
     linha10 = tela_pessoas.lineEdit_6.text()
     linha11 = tela_pessoas.lineEdit_10.text()
-    linha12 = tela_pessoas.lineEdit_11.text()
+    linha12 = tela_pessoas.lineEdit_6.text()
 
     print ("CPF-CNPJ:",linha1)
     print ("Nome:",linha2)
@@ -99,7 +99,6 @@ def funcao_principal():
     tela_pessoas.lineEdit_9.setText("")
     tela_pessoas.lineEdit_6.setText("")
     tela_pessoas.lineEdit_10.setText("")
-    tela_pessoas.lineEdit_11.setText("")
 def Sair():
     tela_pessoas.close()
 def Sair_da_Segunda_Tela():
